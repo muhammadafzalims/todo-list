@@ -1,25 +1,49 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react'
 
-function App() {
+export default function App() {
+  const [inputVal, setinputVal] = useState("")
+  const [item, setitem] = useState([])
+
+  const itemEvent=(e)=>{
+        setinputVal(e.target.value)
+      }
+  const btnClick=()=>{
+        setitem((oldItems)=>{
+          return [...oldItems,inputVal]
+        })
+        setinputVal("")
+        }
+  const deleteItem = (id)=>{
+        console.log("deleted")
+        setitem((oldItems)=>{
+          return oldItems.filter((arrElem, index) => {
+            return index !== id
+          })
+        })
+
+        }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+    <>
+    <div className="main_div">
+      <div className="center_div">
+        <h1>ToDo List</h1>
+        <input type="text" placeholder='add to list' value={inputVal} onChange={itemEvent}/>
+        <button onClick={btnClick}>+</button>
+        <ol>
+         {item.map((itemVal, index)=>{
+            return(
+            <>
+            <div className="todo_style">
+            <i className="fa fa-times" aria-hidden="true" key={index} onClick={()=>{deleteItem(index)}}/>
+              <li>{itemVal}</li>
+            </div>
+            </>
+            )
+          })}
+        </ol>
+      </div>
 
-export default App;
+    </div>
+    </>
+  )
+}
